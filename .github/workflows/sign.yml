@@ -1,9 +1,9 @@
 name: Genshin Auto Sign
 
 on:
-  schecule:
+  schedule:
     - cron: '0 17 * * *'
-workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   sign:
