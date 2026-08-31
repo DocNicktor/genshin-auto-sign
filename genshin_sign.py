@@ -2,9 +2,13 @@ import requests
 import os
 import random
 import time
-from dotenv import load_dotenv
 
-load_dotenv()
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 def sign_in():
     my_cookie = os.environ.get("HOYOLAB_COOKIE")
