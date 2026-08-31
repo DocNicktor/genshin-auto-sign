@@ -2,6 +2,7 @@ import requests
 import os
 import random
 import time
+import datetime
 
 
 try:
@@ -28,12 +29,16 @@ def sign_in():
         "Referer":"https://act.hoyolab.com/",
     }
 
-    print("等待随机时间,防止被当人机")
-    delay_seconds = random.randint(0,3600)  # 0  到 1小时之间随机数
-    print(f"这次决定等个{delay_seconds//60}分钟后再签到.")
+    # testing的时候不用等,自动晚上触发就需要等
+    current_hour = datetime.datetime.now().hour
 
-    # 开始等
-    time.sleep(delay_seconds)
+    if current_hour == 1:
+        print("等待随机时间,防止被当人机")
+        wait_time = random.randint(0, 3600)  # 0 到 1小时之间随机数
+        print(f"当前时间是凌晨1点,决定等个{wait_time//60}分钟后再签到.")
+        time.sleep(wait_time)
+    else:
+        print("当前是手动,直接开始执行~")
 
 
     try:
