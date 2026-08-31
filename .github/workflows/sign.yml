@@ -1,0 +1,25 @@
+name: Genshin Auto Sign
+
+on:
+  schecule:
+    - cron: '0 17 * * *'
+workflow_dispatch:
+
+jobs:
+  sign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉代码
+        uses: actions/checkout@v4
+      - name: python 坏境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: 安装需要的package
+        run: |
+          pip install -r requirements.txt
+      - name: 执行脚本
+        env:
+          HOYOLAB_COOKIE: ${{ secrets.HOYOLAB_COOKIE }}
+        run: |
+          python genshin_sign.py
