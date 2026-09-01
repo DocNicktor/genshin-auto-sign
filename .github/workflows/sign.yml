@@ -21,5 +21,6 @@ jobs:
       - name: 执行脚本
         env:
           HOYOLAB_COOKIE: ${{ secrets.HOYOLAB_COOKIE }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           python genshin_sign.py

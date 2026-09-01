@@ -2,7 +2,6 @@ import requests
 import os
 import random
 import time
-import datetime
 
 
 try:
@@ -30,15 +29,19 @@ def sign_in():
     }
 
     # testing的时候不用等,自动晚上触发就需要等
-    current_hour = datetime.datetime.now().hour
 
-    if current_hour == 1:
+    # 如果触发不到github,比如本地电脑没有github, 找不到eventname的话,会用"manual"来代替
+    event_name = os.getenv("EVENT_NAME", "手动")
+
+    if event_name == "schedule":
         print("等待随机时间,防止被当人机")
         wait_time = random.randint(0, 3600)  # 0 到 1小时之间随机数
-        print(f"当前时间是凌晨1点,决定等个{wait_time//60}分钟后再签到.")
+        print(f"决定等个{wait_time//60}分钟后再签到.")
         time.sleep(wait_time)
+    elif event_name == "workflow_dispatch" or event_name == "手动":
+        print("手动触发签到,不等待.")
     else:
-        print("当前是手动,直接开始执行~")
+        print("收到了其他event_name,有点问题!")
 
 
     try:
@@ -51,7 +54,7 @@ def sign_in():
         if retcode == 0:
             print(f"签到了 \(@^0^@)/ ({message})")
         elif retcode == -5003:
-            print(f"{message} (今天已经签过了,要等明天刷新.)")
+            print(f"{message}")
         else:
             print(f"签到失败: 状态码 {retcode}, 信息: {message}")
     except Exception as e:
